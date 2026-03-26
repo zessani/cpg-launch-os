@@ -25,7 +25,7 @@ export default function Hero() {
         className="max-w-2xl mx-auto flex flex-col items-center gap-6"
       >
         <motion.p variants={item} className="text-xs tracking-widest uppercase text-[#6B7280]">
-          CPG Launch OS
+          RunBase
         </motion.p>
 
         <motion.h1

@@ -9,13 +9,13 @@ const geistSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "CPG Launch OS — Build your brand plan",
+  title: "RunBase — Build your brand plan",
   description: "Answer 7 questions and get a complete, personalized CPG launch plan — roadmap, suppliers, margin model, and brand identity.",
   openGraph: {
-    title: "CPG Launch OS",
+    title: "RunBase",
     description: "Answer 7 questions and get a personalized CPG launch plan — roadmap, suppliers, margins, and brand identity.",
     url: "https://cpg-launch-os.vercel.app",
-    siteName: "CPG Launch OS",
+    siteName: "RunBase",
     type: "website",
   },
 };
