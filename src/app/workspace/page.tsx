@@ -47,6 +47,25 @@ export default function Workspace() {
   const [hasLocalEdits, setHasLocalEdits] = useState(false)
   const aiContentRef = useRef<WorkspaceContent | null>(null)
 
+  function runGeneration(parsed: Partial<OnboardingAnswers>) {
+    setLoading(true)
+    setError(null)
+    fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers: parsed }),
+    })
+      .then(res => { if (!res.ok) throw new Error(`API error ${res.status}`); return res.json() })
+      .then((data: WorkspaceContent) => {
+        aiContentRef.current = data
+        if (!localStorage.getItem('cpg_workspace')) {
+          setWorkspaceData(data)
+        }
+        setLoading(false)
+      })
+      .catch(err => { setError(err.message); setLoading(false) })
+  }
+
   useEffect(() => {
     // Load answers
     let parsed: Partial<OnboardingAnswers> = {}
@@ -68,22 +87,7 @@ export default function Workspace() {
 
     // No saved edits — call AI
     if (Object.keys(parsed).length === 0) return
-    setLoading(true)
-    fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answers: parsed }),
-    })
-      .then(res => { if (!res.ok) throw new Error(`API error ${res.status}`); return res.json() })
-      .then((data: WorkspaceContent) => {
-        aiContentRef.current = data
-        // Guard: don't overwrite edits made during generation
-        if (!localStorage.getItem('cpg_workspace')) {
-          setWorkspaceData(data)
-        }
-        setLoading(false)
-      })
-      .catch(err => { setError(err.message); setLoading(false) })
+    runGeneration(parsed)
   }, [])
 
   function handleWorkspaceChange(patch: Partial<WorkspaceContent>) {
@@ -112,14 +116,23 @@ export default function Workspace() {
     <div className="min-h-screen">
       <SummaryBar answers={answers} />
 
-      {(error || hasLocalEdits) && (
-        <div className="max-w-5xl mx-auto px-8 py-3 flex items-center gap-6">
-          {error && <p className="text-xs text-red-500">Generation failed: {error}.</p>}
-          {hasLocalEdits && (
-            <button onClick={handleReset} className="text-xs text-[#6B7280] hover:text-[#0A0A0A] transition-colors underline underline-offset-2">
-              Reset to generated
-            </button>
-          )}
+      {error && (
+        <div className="max-w-5xl mx-auto px-8 mt-6 py-4 flex items-center justify-between gap-4 border border-red-200 bg-red-50">
+          <p className="text-sm text-red-700">Couldn&apos;t generate your plan — the AI hit an error.</p>
+          <button
+            onClick={() => runGeneration(answers)}
+            className="text-sm font-medium text-red-700 underline underline-offset-2 whitespace-nowrap"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {!error && hasLocalEdits && (
+        <div className="max-w-5xl mx-auto px-8 py-3">
+          <button onClick={handleReset} className="text-xs text-[#6B7280] hover:text-[#0A0A0A] transition-colors underline underline-offset-2">
+            Reset to generated
+          </button>
         </div>
       )}
 
