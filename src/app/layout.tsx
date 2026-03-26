@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CPG Launch OS",
     description: "Answer 7 questions and get a personalized CPG launch plan — roadmap, suppliers, margins, and brand identity.",
+    url: "https://cpg-launch-os.vercel.app",
     siteName: "CPG Launch OS",
     type: "website",
   },
