@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { OnboardingAnswers, WorkspaceContent, RoadmapPhase, Supplier, MarginData, BrandData } from '@/types'
 import SummaryBar from '@/components/workspace/SummaryBar'
@@ -14,6 +14,8 @@ export default function Workspace() {
   const [answers, setAnswers] = useState<Partial<OnboardingAnswers>>({})
   const [workspaceData, setWorkspaceData] = useState<WorkspaceContent | null>(null)
   const [hasLocalEdits, setHasLocalEdits] = useState(false)
+  const [suppliersLoading, setSuppliersLoading] = useState(false)
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   useEffect(() => {
     try {
@@ -21,22 +23,54 @@ export default function Workspace() {
       if (raw) setAnswers(JSON.parse(raw))
     } catch { /* ignore */ }
 
+    let data: WorkspaceContent | null = null
+
     try {
       const saved = localStorage.getItem('cpg_workspace')
       if (saved) {
-        setWorkspaceData(JSON.parse(saved))
+        data = JSON.parse(saved)
+        setWorkspaceData(data)
         setHasLocalEdits(true)
+        // User has edits — don't overwrite suppliers
         return
       }
       const ai = localStorage.getItem('cpg_workspace_ai')
       if (ai) {
-        setWorkspaceData(JSON.parse(ai))
-        return
+        data = JSON.parse(ai)
       }
     } catch { /* ignore */ }
 
-    // Nothing in storage — send back to start
-    router.replace('/')
+    if (!data) {
+      router.replace('/')
+      return
+    }
+
+    // Merge real suppliers if already available
+    try {
+      const suppliersRaw = localStorage.getItem('cpg_suppliers_ai')
+      if (suppliersRaw) {
+        data = { ...data, suppliers: JSON.parse(suppliersRaw) }
+      } else {
+        // Still generating — poll for them
+        setSuppliersLoading(true)
+        pollRef.current = setInterval(() => {
+          const s = localStorage.getItem('cpg_suppliers_ai')
+          if (s) {
+            clearInterval(pollRef.current!)
+            setSuppliersLoading(false)
+            try {
+              setWorkspaceData(prev => prev ? { ...prev, suppliers: JSON.parse(s) } : prev)
+            } catch { /* ignore */ }
+          }
+        }, 500)
+      }
+    } catch { /* ignore */ }
+
+    setWorkspaceData(data)
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current)
+    }
   }, [router])
 
   function handleWorkspaceChange(patch: Partial<WorkspaceContent>) {
@@ -54,7 +88,10 @@ export default function Workspace() {
     try {
       const ai = localStorage.getItem('cpg_workspace_ai')
       if (ai) {
-        setWorkspaceData(JSON.parse(ai))
+        const data = JSON.parse(ai)
+        const suppliersRaw = localStorage.getItem('cpg_suppliers_ai')
+        const suppliers = suppliersRaw ? JSON.parse(suppliersRaw) : data.suppliers
+        setWorkspaceData({ ...data, suppliers })
         setHasLocalEdits(false)
       }
     } catch { /* ignore */ }
@@ -81,6 +118,7 @@ export default function Workspace() {
       <SuppliersSection
         answers={answers}
         suppliers={workspaceData.suppliers}
+        loading={suppliersLoading}
         onChange={(suppliers: Supplier[]) => handleWorkspaceChange({ suppliers })}
       />
       <MarginsSection

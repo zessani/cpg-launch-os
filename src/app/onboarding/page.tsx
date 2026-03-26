@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { getQuestions, OnboardingAnswers, WorkspaceContent } from '@/types'
+import { getQuestions, OnboardingAnswers, WorkspaceContent, Supplier } from '@/types'
 import ProgressBar from '@/components/onboarding/ProgressBar'
 import QuestionScreen from '@/components/onboarding/QuestionScreen'
 import LoadingScreen from '@/components/onboarding/LoadingScreen'
@@ -18,7 +18,9 @@ export default function Onboarding() {
 
   function generate(savedAnswers: Partial<OnboardingAnswers>) {
     setGenerationError(false)
-    fetch('/api/generate', {
+
+    // Fire both calls in parallel
+    const mainCall = fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers: savedAnswers }),
@@ -26,8 +28,23 @@ export default function Onboarding() {
       .then(res => { if (!res.ok) throw new Error('API error'); return res.json() })
       .then((data: WorkspaceContent) => {
         localStorage.setItem('cpg_workspace_ai', JSON.stringify(data))
-        router.push('/workspace')
       })
+
+    // Supplier search runs in parallel — saves to its own key when ready
+    fetch('/api/generate-suppliers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers: savedAnswers }),
+    })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then((suppliers: Supplier[]) => {
+        localStorage.setItem('cpg_suppliers_ai', JSON.stringify(suppliers))
+      })
+      .catch(() => { /* workspace falls back to suppliers from main call */ })
+
+    // Redirect as soon as main call finishes — don't wait for suppliers
+    mainCall
+      .then(() => router.push('/workspace'))
       .catch(() => setGenerationError(true))
   }
 

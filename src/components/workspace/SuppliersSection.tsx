@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { OnboardingAnswers, Supplier } from '@/types'
 import EditableText from '@/components/ui/EditableText'
@@ -83,7 +83,7 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#E5E5E5]">
-                {['Name', 'Type', 'Location', 'Min Order', 'Status', ''].map((h, i) => (
+                {['Name', 'Type', 'Location', 'Min Order', 'Status', '', ''].map((h, i) => (
                   <th key={i} className="text-left text-xs text-[#6B7280] pb-3 pr-6 font-medium">{h}</th>
                 ))}
               </tr>
@@ -92,8 +92,8 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
               {suppliers.map((s, i) => {
                 const state = states[s.name] ?? { contacted: false, note: '' }
                 return (
-                  <>
-                    <tr key={i} className="group border-b border-[#E5E5E5]">
+                  <Fragment key={i}>
+                    <tr className="group border-b border-[#E5E5E5]">
                       <td className="py-3 pr-6 font-medium text-[#0A0A0A]">
                         <EditableText value={s.name} onChange={v => updateField(i, 'name', v)} placeholder="Supplier name…" autoFocus={pendingFocusIdx === i} />
                       </td>
@@ -116,6 +116,17 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
                           {state.contacted ? '✓ Contacted' : 'To Contact'}
                         </button>
                       </td>
+                      <td className="py-3 pr-4">
+                        <a
+                          href={`https://www.google.com/search?q=${encodeURIComponent(`${s.name} ${s.type}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity text-[#6B7280] hover:text-[#0A0A0A] text-xs"
+                          title="Search on Google"
+                        >
+                          ↗
+                        </a>
+                      </td>
                       <td className="py-3">
                         {suppliers.length > 1 && (
                           <button
@@ -136,7 +147,7 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <td colSpan={6} className="pb-3 pt-1 border-b border-[#E5E5E5]">
+                          <td colSpan={7} className="pb-3 pt-1 border-b border-[#E5E5E5]">
                             <input
                               type="text"
                               value={state.note}
@@ -148,7 +159,7 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
                         </motion.tr>
                       )}
                     </AnimatePresence>
-                  </>
+                  </Fragment>
                 )
               })}
             </tbody>
