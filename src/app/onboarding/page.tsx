@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { getQuestions, OnboardingAnswers } from '@/types'
+import { getQuestions, OnboardingAnswers, WorkspaceContent } from '@/types'
 import ProgressBar from '@/components/onboarding/ProgressBar'
 import QuestionScreen from '@/components/onboarding/QuestionScreen'
 import LoadingScreen from '@/components/onboarding/LoadingScreen'
@@ -11,18 +11,32 @@ export default function Onboarding() {
   const router = useRouter()
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<Partial<OnboardingAnswers>>({})
+  const [generationError, setGenerationError] = useState(false)
 
   const questions = useMemo(() => getQuestions(answers), [answers])
   const isLoading = step === questions.length
 
+  function generate(savedAnswers: Partial<OnboardingAnswers>) {
+    setGenerationError(false)
+    fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers: savedAnswers }),
+    })
+      .then(res => { if (!res.ok) throw new Error('API error'); return res.json() })
+      .then((data: WorkspaceContent) => {
+        localStorage.setItem('cpg_workspace_ai', JSON.stringify(data))
+        router.push('/workspace')
+      })
+      .catch(() => setGenerationError(true))
+  }
+
   useEffect(() => {
     if (!isLoading) return
-    const id = setTimeout(() => {
-      localStorage.setItem('cpg_answers', JSON.stringify(answers))
-      router.push('/workspace')
-    }, 3000)
-    return () => clearTimeout(id)
-  }, [isLoading, answers, router])
+    localStorage.setItem('cpg_answers', JSON.stringify(answers))
+    generate(answers)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading])
 
   function handleAnswer(val: string) {
     const key = questions[step].id
@@ -42,7 +56,7 @@ export default function Onboarding() {
       <ProgressBar step={step} total={questions.length} />
 
       {isLoading ? (
-        <LoadingScreen />
+        <LoadingScreen error={generationError} onRetry={() => generate(answers)} />
       ) : (
         <QuestionScreen
           question={questions[step]}

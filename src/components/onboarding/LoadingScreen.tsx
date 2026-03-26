@@ -4,15 +4,35 @@ import { useState, useEffect } from 'react'
 import { LOADING_MESSAGES } from '@/types'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export default function LoadingScreen() {
+interface LoadingScreenProps {
+  error?: boolean
+  onRetry?: () => void
+}
+
+export default function LoadingScreen({ error, onRetry }: LoadingScreenProps) {
   const [msgIndex, setMsgIndex] = useState(0)
 
   useEffect(() => {
+    if (error) return
     const id = setInterval(() => {
       setMsgIndex((i) => (i + 1) % LOADING_MESSAGES.length)
     }, 600)
     return () => clearInterval(id)
-  }, [])
+  }, [error])
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <p className="text-sm text-[#6B7280]">Something went wrong generating your plan.</p>
+        <button
+          onClick={onRetry}
+          className="text-sm font-medium text-[#0A0A0A] underline underline-offset-2"
+        >
+          Try again
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-8">
