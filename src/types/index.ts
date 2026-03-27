@@ -101,6 +101,7 @@ export type Supplier = {
   type: string
   location: string
   minOrder: string
+  source?: string
 }
 
 export type MarginData = {

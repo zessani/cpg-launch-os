@@ -118,11 +118,11 @@ export default function SuppliersSection({ suppliers, loading, onChange }: Suppl
                       </td>
                       <td className="py-3 pr-4">
                         <a
-                          href={`https://www.google.com/search?q=${encodeURIComponent(`${s.name} ${s.type}`)}`}
+                          href={s.source || `https://www.google.com/search?q=${encodeURIComponent(`${s.name} ${s.type}`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="opacity-0 group-hover:opacity-100 transition-opacity text-[#6B7280] hover:text-[#0A0A0A] text-xs"
-                          title="Search on Google"
+                          title={s.source ? 'Visit website' : 'Search on Google'}
                         >
                           ↗
                         </a>
