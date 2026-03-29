@@ -17,16 +17,27 @@ const item = {
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-8 pt-14 text-center overflow-hidden">
+      {/* Subtle radial gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 70%)' }}
+      />
+
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="max-w-2xl mx-auto flex flex-col items-center gap-6"
+        className="relative max-w-4xl mx-auto flex flex-col items-center gap-6"
       >
-        <motion.p variants={item} className="text-xs tracking-widest uppercase text-[#6B7280]">
-          RunBase
-        </motion.p>
+        {/* Pill badge */}
+        <motion.div
+          variants={item}
+          className="inline-flex items-center gap-1.5 border border-[#E5E5E5] px-3 py-1 text-[11px] text-[#6B7280]"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] inline-block" />
+          Free to use · No signup required
+        </motion.div>
 
         <motion.h1
           variants={item}
