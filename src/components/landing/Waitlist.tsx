@@ -21,11 +21,11 @@ export default function Waitlist() {
   }
 
   return (
-    <section className="px-6 py-24 border-t border-[#E5E5E5]">
+    <section className="px-8 py-24">
       <div className="max-w-md mx-auto text-center flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <p className="text-sm font-semibold text-[#0A0A0A]">Stay in the loop</p>
-          <p className="text-sm text-[#6B7280]">
+          <p className="text-sm font-semibold text-white">Stay in the loop</p>
+          <p className="text-sm text-zinc-500">
             Get notified when new supplier data and roadmap templates drop.
           </p>
         </div>
@@ -36,7 +36,7 @@ export default function Waitlist() {
               key="thanks"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-sm text-[#0A0A0A]"
+              className="text-sm text-white"
             >
               You&apos;re on the list.
             </motion.p>
@@ -54,11 +54,11 @@ export default function Waitlist() {
                 placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-transparent border-b border-[#E5E5E5] focus:border-[#0A0A0A] outline-none text-sm py-2 text-[#0A0A0A] placeholder:text-[#6B7280] transition-colors"
+                className="flex-1 bg-transparent border-b border-white/10 focus:border-[#F97316] outline-none text-sm py-2 text-white placeholder:text-zinc-600 transition-colors"
               />
               <button
                 type="submit"
-                className="text-sm font-medium text-[#0A0A0A] hover:text-[#6B7280] transition-colors whitespace-nowrap"
+                className="text-sm font-medium text-[#F97316] hover:text-[#FBBF24] transition-colors whitespace-nowrap"
               >
                 Join waitlist
               </button>
