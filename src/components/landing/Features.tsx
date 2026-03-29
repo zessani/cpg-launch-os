@@ -21,49 +21,26 @@ const features = [
   },
 ]
 
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.1 },
-  },
-}
-
-const card = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
-}
-
 export default function Features() {
   return (
-    <section className="px-8 py-24">
+    <section className="px-8 py-24 border-t border-[#E5E5E5]">
       <div className="max-w-7xl mx-auto">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-xs uppercase tracking-widest text-zinc-500 mb-12"
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          What you get
-        </motion.p>
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]"
-        >
-          {features.map((f, i) => (
-            <motion.div
-              key={f.label}
-              variants={card}
-              className="flex flex-col gap-3 p-8 bg-[#0A0A0A] hover:bg-white/[0.02] transition-colors group"
-            >
-              <p className="text-[10px] text-[#F97316] font-mono">0{i + 1}</p>
-              <p className="text-base font-semibold text-white">{f.label}</p>
-              <p className="text-sm text-zinc-500 leading-relaxed">{f.description}</p>
-            </motion.div>
-          ))}
+          <p className="text-xs uppercase tracking-widest text-[#6B7280] mb-12">What you get</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-12">
+            {features.map((f, i) => (
+              <div key={f.label} className="flex flex-col gap-2">
+                <p className="text-[10px] text-[#D1D5DB] font-mono mb-1">0{i + 1}</p>
+                <p className="text-sm font-semibold text-[#0A0A0A]">{f.label}</p>
+                <p className="text-sm text-[#6B7280] leading-relaxed">{f.description}</p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

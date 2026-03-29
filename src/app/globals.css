@@ -3,11 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --background: #0A0A0A;
-  --foreground: #FFFFFF;
-  --muted: #71717A;
-  --border: rgba(255,255,255,0.08);
-  --accent: #F97316;
+  --background: #FAFAF9;
+  --foreground: #0A0A0A;
+  --muted: #6B7280;
+  --border: #E5E5E5;
 }
 
 * {
@@ -20,18 +19,18 @@ html {
 }
 
 body {
-  background-color: #0A0A0A;
-  color: #FFFFFF;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 ::selection {
-  background: #F97316;
-  color: #0A0A0A;
+  background: #0A0A0A;
+  color: #FAFAF9;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 1000px #111111 inset;
-  -webkit-text-fill-color: #FFFFFF;
+  -webkit-box-shadow: 0 0 0px 1000px #FAFAF9 inset;
+  -webkit-text-fill-color: #0A0A0A;
 }

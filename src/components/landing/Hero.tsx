@@ -6,39 +6,34 @@ import { motion } from 'framer-motion'
 const container = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.14 },
+    transition: { staggerChildren: 0.12 },
   },
 }
 
 const item = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 }
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-8 pt-14 text-center overflow-hidden">
-      {/* Ambient orange glow */}
+      {/* Subtle radial gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 60%, rgba(249,115,22,0.12) 0%, transparent 70%)' }}
-      />
-      {/* Top vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 100% 30% at 50% 0%, rgba(0,0,0,0.6) 0%, transparent 60%)' }}
+        style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 70%)' }}
       />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative max-w-4xl mx-auto flex flex-col items-center gap-7"
+        className="relative max-w-4xl mx-auto flex flex-col items-center gap-6"
       >
         {/* Pill badge */}
         <motion.div
           variants={item}
-          className="inline-flex items-center gap-1.5 border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] text-zinc-400"
+          className="inline-flex items-center gap-1.5 border border-[#E5E5E5] px-3 py-1 text-[11px] text-[#6B7280]"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] inline-block" />
           Free to use · No signup required
@@ -46,16 +41,14 @@ export default function Hero() {
 
         <motion.h1
           variants={item}
-          className="text-6xl sm:text-7xl lg:text-8xl font-semibold leading-[1.05] tracking-tight text-white"
+          className="text-5xl sm:text-6xl font-semibold leading-[1.1] tracking-tight text-[#0A0A0A]"
         >
           Your CPG brand,
           <br />
-          <span className="bg-gradient-to-r from-[#F97316] to-[#FBBF24] bg-clip-text text-transparent">
-            launched.
-          </span>
+          launched.
         </motion.h1>
 
-        <motion.p variants={item} className="text-lg text-zinc-400 leading-relaxed max-w-md">
+        <motion.p variants={item} className="text-lg text-[#6B7280] leading-relaxed max-w-md">
           Answer 7 questions. Get a complete, personalized launch plan — roadmap, suppliers,
           margin model, and brand identity — in one workspace.
         </motion.p>
@@ -63,7 +56,7 @@ export default function Hero() {
         <motion.div variants={item}>
           <Link
             href="/onboarding"
-            className="inline-flex items-center gap-2 bg-[#F97316] text-white px-8 py-4 text-sm font-medium hover:bg-[#EA6C0A] transition-colors shadow-[0_0_32px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 bg-[#0A0A0A] text-[#FAFAF9] px-7 py-3.5 text-sm font-medium hover:bg-[#1a1a1a] transition-colors"
           >
             Build my brand plan
             <span aria-hidden>→</span>
