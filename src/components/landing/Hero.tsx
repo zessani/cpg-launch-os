@@ -17,7 +17,7 @@ const item = {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-8 pt-14 text-center overflow-hidden">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-8 text-center overflow-hidden">
       {/* Subtle radial gradient */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -43,14 +43,12 @@ export default function Hero() {
           variants={item}
           className="text-5xl sm:text-6xl font-semibold leading-[1.1] tracking-tight text-[#0A0A0A]"
         >
-          Your CPG brand,
-          <br />
-          launched.
+          From idea to shelf, without the guesswork.
         </motion.h1>
 
         <motion.p variants={item} className="text-lg text-[#6B7280] leading-relaxed max-w-md">
-          Answer 7 questions. Get a complete, personalized launch plan — roadmap, suppliers,
-          margin model, and brand identity — in one workspace.
+          RunBase gives serious CPG founders a personalized launch plan, real co-packer connections,
+          and the workspace to manage everything — in minutes.
         </motion.p>
 
         <motion.div variants={item}>
@@ -58,7 +56,7 @@ export default function Hero() {
             href="/onboarding"
             className="inline-flex items-center gap-2 bg-[#0A0A0A] text-[#FAFAF9] px-7 py-3.5 text-sm font-medium hover:bg-[#1a1a1a] transition-colors"
           >
-            Build my brand plan
+            Build my launch plan
             <span aria-hidden>→</span>
           </Link>
         </motion.div>

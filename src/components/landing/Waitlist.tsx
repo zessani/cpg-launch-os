@@ -21,7 +21,7 @@ export default function Waitlist() {
   }
 
   return (
-    <section className="px-6 py-24 border-t border-[#E5E5E5]">
+    <section className="px-6 py-24">
       <div className="max-w-md mx-auto text-center flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <p className="text-sm font-semibold text-[#0A0A0A]">Stay in the loop</p>

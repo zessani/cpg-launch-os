@@ -23,7 +23,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="px-8 py-24 border-t border-[#E5E5E5]">
+    <section className="px-8 py-24">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
