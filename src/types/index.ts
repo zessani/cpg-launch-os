@@ -4,7 +4,6 @@ export type OnboardingAnswers = {
   launchMarket: string
   targetCustomer: string
   launchBudget: string
-  manufacturing: string
   stage: string
   brandVision: string
 }
@@ -49,12 +48,6 @@ const BASE_QUESTIONS: Question[] = [
     text: 'What is your launch budget?',
     type: 'choice',
     options: ['Under $10K', '$10K–$50K', '$50K–$150K', '$150K+'],
-  },
-  {
-    id: 'manufacturing',
-    text: 'How do you plan to manufacture?',
-    type: 'choice',
-    options: ['Outsource to co-packer', 'In-house', 'Not sure yet'],
   },
   {
     id: 'stage',

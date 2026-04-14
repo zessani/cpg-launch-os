@@ -48,7 +48,7 @@ export default function Hero() {
 
         <motion.p variants={item} className="text-lg text-[#6B7280] leading-relaxed max-w-md">
           RunBase gives serious CPG founders a personalized launch plan, real co-packer connections,
-          and the workspace to manage everything — in minutes.
+          and the workspace to manage everything, in minutes.
         </motion.p>
 
         <motion.div variants={item}>

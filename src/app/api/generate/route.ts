@@ -50,7 +50,6 @@ Founder profile:
 - Launch market: ${answers.launchMarket}
 - Target customer: ${answers.targetCustomer}
 - Budget: ${answers.launchBudget}
-- Manufacturing plan: ${answers.manufacturing}
 - Current stage: ${answers.stage}
 - Brand vision: ${answers.brandVision}
 
